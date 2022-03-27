@@ -47,3 +47,5 @@ mybatis-plus:
 qiniu:
   accessKey: jeS0BvdMuoJjzXSmkpnIxi2QxE49fqJlkUbe78bV
   accessSecretKey: q3asDaQlABneSOMEAHuPzphZnBxSsRqQej7J2kKC
+
+#testPUSH
