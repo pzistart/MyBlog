@@ -1,0 +1,45 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: pzistart_blog
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: root
+      initial-size: 5
+      min-idle: 4
+      max-active: 200
+      max-wait: 6000
+      test-on-borrow: true
+      test-while-idle: true
+  redis:
+    host: localhost
+    port: 6379
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 20MB
+
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm
+  rabbitmq:
+    host: 192.168.64.131 # 主机名
+    port: 5672 # 端口
+    virtual-host: / # 虚拟主机
+    username: yyp # 用户名
+    password: 123123 # 密码
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      table-prefix: ms_
+  mapper-locations: classpath*:com/pzi/blog/dao/mapper/*.xml
+
+qiniu:
+  accessKey: jeS0BvdMuoJjzXSmkpnIxi2QxE49fqJlkUbe78bV
+  accessSecretKey: q3asDaQlABneSOMEAHuPzphZnBxSsRqQej7J2kKC

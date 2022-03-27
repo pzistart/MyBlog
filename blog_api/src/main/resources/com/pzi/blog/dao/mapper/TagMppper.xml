@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pzi.blog.dao.mapper.TagMapper">
+
+    <!--List<Tag> getAllTags(Article article);|-->
+    <select id="getAllTags" resultType="com.pzi.blog.dao.Tag">
+        SELECT  t2.id,t2.tag_name
+          FROM ms_article_body ab,ms_article_tag t1,ms_tag t2
+            WHERE ab.article_id = t1.article_id
+            AND t1.tag_id = t2.id
+            AND ab.article_id = #{id};
+    </select>
+
+    <select id="getHotTags" resultType="com.pzi.blog.dao.Tag">
+      SELECT t2.tag_name,t2.id
+          FROM ms_article_tag t,ms_tag t2
+            WHERE t.tag_id = t2.id
+        GROUP BY t.tag_id
+        ORDER BY count(t.article_id) DESC
+        LIMIT #{count};
+    </select>
+
+</mapper>

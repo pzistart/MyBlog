@@ -1,0 +1,3 @@
+# Project exclude paths
+/blog_admin/target/
+/blog_api/target/

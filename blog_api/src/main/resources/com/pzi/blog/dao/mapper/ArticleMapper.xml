@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pzi.blog.dao.mapper.AritcleMapper">
+
+    <select id="listArchiver" resultType="com.pzi.blog.dao.dos.Archives">
+            select year(FROM_UNIXTIME(create_date/1000))as year,MONTH(FROM_UNIXTIME(create_date/1000))as month,
+              count(*) as count
+            from ms_article
+            group by year,month
+            LIMIT #{count};
+    </select>
+
+    <!--    List<Article> listArticleByTagId(Long tagId);-->
+    <select id="listArticleByTagId" resultType="com.pzi.blog.dao.Article">
+        SELECT *
+        FROM ms_article a
+        WHERE a.id IN
+              (SELECT article_id
+               FROM ms_article_tag
+               WHERE tag_id = #{tagId}
+        );
+    </select>
+
+<!--    <resultMap id="articleMap" type="com.pzi.blog.dao.Article">
+        <id column="id" property="id" />
+        <result column="author_id" property="authorId"/>
+        <result column="comment_counts" property="commentCounts"/>
+        <result column="create_date" property="createDate"/>
+        <result column="summary" property="summary"/>
+        <result column="title" property="title"/>
+        <result column="view_counts" property="viewCounts"/>
+        <result column="weight" property="weight"/>
+        <result column="body_id" property="bodyId"/>
+        <result column="category_id" property="categoryId"/>
+    </resultMap>-->
+
+
+    <!--                pageParams.getPage(),
+                        pageParams.getPageSize(),
+                        pageParams.getCategoryId(),
+                        pageParams.getTagId(),
+                        pageParams.getYear(),
+                        pageParams.getMonth());-->
+
+    <select id="listArticlePageXml" resultType="com.pzi.blog.dao.Article">
+
+        SELECT *
+        FROM ms_article
+        <where>
+            1 = 1
+            <if test="categoryId != null">
+                AND category_Id = #{categoryId}
+            </if>
+            <if test="tagId != null">
+                and id in (select article_id from ms_article_tag where tag_id = #{tagId})
+            </if>
+            <if test="year != null and year.length>0 and month != null and month.length > 0">
+                and year(FROM_UNIXTIME(create_date/1000)) = #{year}
+                and MONTH(FROM_UNIXTIME(create_date/1000)) = #{month}
+            </if>
+        </where>
+        order by weight DESC ,create_date DESC
+        limit #{page},#{pageSize}
+    </select>
+
+
+    <!--  limit 从该数的下一个开始 显示几个
+
+           page表示页数 pageSize表示显示几个
+            第一页 0 5  page = 1       page <= 1 ? 0 : (page-1)*pageSize
+            第二页 5 5  page = 2
+            第三页 10 5 page = 3
+            第四页 15 5 page = 4
+    -->
+</mapper>
+
